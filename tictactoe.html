@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var boardMatrix = [
+            [null, null, null],
+            [null, null, null],
+            [null, null, null],
+        ];
+        document.body.style.display = "flex";
+        document.body.style.width = "100%";
+        document.body.style.height = "100vh";
+        document.body.style.justifyContent = "center";
+        document.body.style.alignItems = "center";
+
+        var board = document.createElement("div");
+        board.style.width = "306px";
+        board.style.height = "306px";
+        board.style.display = "flex";
+        board.style.flexWrap = "wrap";
+        var currentPlayer = "X";
+        for (let row = 0; row < boardMatrix.length; row++) {
+            for (let col = 0; col < boardMatrix[row].length; col++) {
+                var box = document.createElement("div");
+                box.style.width = "100px";
+                box.style.height = "100px";
+                box.style.border = "1px solid black";
+                box.style.backgroundColor = "wheat";
+                box.style.textAlign = "center";
+                box.style.verticalAlign = "middle";
+                box.style.lineHeight = "90px";
+                box.style.fontSize = "22px";
+                box.style.cursor = "pointer";
+
+                box.onmouseover = function () {
+                    this.style.backgroundColor = "#d2b887";
+                };
+
+                box.onmouseleave = function () {
+                    this.style.backgroundColor = "wheat";
+                };
+                //   box.innerHTML = "id " + row + "," + col
+                box.onclick = function () {
+                    if (this.innerHTML == "") {
+                        this.innerHTML = currentPlayer;
+                        boardMatrix[row][col] = currentPlayer;
+                        console.log(boardMatrix);
+                        var winner = findWinner();
+                        if (winner) {
+                            console.log("Winner is " + winner);
+                        }
+                        if (currentPlayer == "X") {
+                            currentPlayer = "O";
+                        } else {
+                            currentPlayer = "X";
+                        }
+                    }
+                };
+                board.appendChild(box);
+            }
+        }
+
+        function findWinner() {
+            var bm = boardMatrix;
+            // Check if all boxes are full
+            var allBoxisFull = true;
+            for (let row of bm) {
+                for (let col of row) {
+                    if (col == null) {
+                        allBoxisFull = false;
+                    }
+                }
+            }
+            console.log("allBoxisFull", allBoxisFull);
+            // return allBoxisFull;
+
+            // Check all Row
+            var isValidRow = false;
+
+            bm.forEach(function (row) {
+                var firstElement = row[0];
+                var isSame = true;
+
+                row.forEach(function (value) {
+                    if (
+                        value !== firstElement ||
+                        (firstElement !== "X" && firstElement !== "O")
+                    ) {
+                        isSame = false;
+                    }
+                });
+
+                if (isSame) {
+                    isValidRow = true;
+                }
+            });
+            return JSON.stringify({ allBoxisFull, isValidRow });
+
+            // Check all Col
+
+            // Check Left Diagnoal
+
+            // Check Right Diagnoal
+            return false;
+        }
+
+        document.body.appendChild(board);
+
+        //   i = 0
+        //   j = 0
+        //   j = 1
+        //   j = 2
+
+        //   i = 1
+        //   j = 0
+        //   j = 1
+        //   j = 2
+
+        //   i = 2
+        //   j = 0
+        //   j = 1
+        //   j = 2
+    </script>
+</body>
+
+</html>
